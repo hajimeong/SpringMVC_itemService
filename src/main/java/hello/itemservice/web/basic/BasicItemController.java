@@ -8,6 +8,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.List;
@@ -37,6 +38,19 @@ public class BasicItemController {
         model.addAttribute("item", item);
 
         return "basic/item";
+    }
+
+    //같은 url이지만 http메서드로 기능을 구분해줌
+    //get으로 오면 addForm을 호출
+    @GetMapping("/add")
+    public String addForm(){
+        return "/basic/addForm";
+    }
+
+    //post로 오면 save를 호출
+    @PostMapping("/add")
+    public String save(){
+        return "basic/addForm";
     }
 
     /**
