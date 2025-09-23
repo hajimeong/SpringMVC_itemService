@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
 
@@ -86,13 +87,26 @@ public class BasicItemController {
         return "basic/item";
     }
 
-    @PostMapping("/add")
+    //@PostMapping("/add")
     public String addItemV5(Item item){
         itemRepository.save(item);
 
         //url 인코딩해서 넘겨야함 -> 지금 형태는 위험함
         //현재는 url 인코딩이 안됨
         return "redirect:/basic/items/" + item.getId();
+    }
+
+    /**
+     * 리다이렉트할 때 파라미터를 붙여서 보냄
+     * 그 파라미터가 잇으면 저장되었음을 알려줌
+     */
+
+    @PostMapping("/add")
+    public String addItemV6(Item item, RedirectAttributes redirectAttributes){
+        Item savedItem = itemRepository.save(item);
+        redirectAttributes.addAttribute("itemId", savedItem.getId());
+        redirectAttributes.addAttribute("status", true);
+        return "redirect:/basic/items/{itemId}";
     }
 
 
